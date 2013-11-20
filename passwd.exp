@@ -1,0 +1,8 @@
+#!/usr/bin/expect
+set timeout 20
+set u [lindex $argv 0]
+set p [lindex $argv 1]
+spawn passwd $u
+expect "New password:" { send "$p\r" }
+expect "Retype new password:" { send "$p\r" }
+interact
