@@ -79,11 +79,20 @@ for ((i=0; i<${#groups[@]}; i++)); do
 done
 
 # Create user(s)
-for ((i=0; i<${#users[@]}; i=i+2)); do
+for ((i=0; i<${#users[@]}; i=i+3)); do
 	user=${users[$i]}
 	pw=${users[$i+1]}
+	key=${users[$i+2]}
+	
 	useradd $user
 	./passwd.exp $user $pw
+	if [[ ! -z "$key" ]]; then
+		mkdir /home/$user/.ssh
+		cat $key > /home/$user/.ssh/authorized_keys
+		chown -R $user:$user /home/$user/.ssh
+		chmod 700 /home/$user/.ssh
+		chmod 600 /home/$user/.ssh/*
+	fi
 	echo "Added user $user"
 done
 
