@@ -25,7 +25,7 @@ yum install expect httpd mysql mysql-server php php-mysql php-xml $packages
 echo "Setting up MySQL..."
 chkconfig mysqld on
 service mysqld start
-./mysql.exp $mysql_root_password
+./mysql.exp $mysql_pw $mysql_new_pw
 
 # Configure Apache
 echo "Setting up Apache..."
@@ -35,7 +35,7 @@ service httpd start
 # Create database(s) and user(s)
 for ((i=0; i<${#mysql_dbs[@]}; i++)); do
 	db=${mysql_dbs[$i]}
-	mysql --user=root --password=$mysql_root_password -e "CREATE DATABASE IF NOT EXISTS $db CHARACTER SET utf8;"
+	mysql --user=root --password=$mysql_pw -e "CREATE DATABASE IF NOT EXISTS $db CHARACTER SET utf8;"
 	echo "Created database $db"
 done
 
@@ -44,7 +44,7 @@ for ((i=0; i<${#mysql_users[@]}; i=i+3)); do
 	dbu=${mysql_users[$i]}
 	dbo=${mysql_users[$i+1]}
 	dbp=${mysql_users[$i+2]}
-	mysql --user=root --password=$mysql_root_password -e "GRANT ALL ON $dbo TO $dbu@localhost IDENTIFIED BY '$dbp';"
+	mysql --user=root --password=$mysql_pw -e "GRANT ALL ON $dbo TO $dbu@localhost IDENTIFIED BY '$dbp';"
 	echo "Created database user $dbu"
 done
 

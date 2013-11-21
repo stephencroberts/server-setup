@@ -1,11 +1,12 @@
 #!/usr/bin/expect
 set timeout 20
-set p [lindex $argv 0]
+set old [lindex $argv 0]
+set new [lindex $argv 1]
 spawn "/usr/bin/mysql_secure_installation"
-expect "Enter current password for root (enter for none):" { send "\r" }
-expect "Set root password?" { send "y\r" }
-expect "New password:" { send "$p\r" }
-expect "Re-enter new password:" { send "$p\r" }
+expect "Enter current password for root (enter for none):" { send "$old\r" }
+expect "root password?" { send "y\r" }
+expect "New password:" { send "$new\r" }
+expect "Re-enter new password:" { send "$new\r" }
 expect "Remove anonymous users?" { send "y\r" }
 expect "Disallow root login remotely?" { send "y\r" }
 expect "Remove test database and access to it?" { send "y\r" }
